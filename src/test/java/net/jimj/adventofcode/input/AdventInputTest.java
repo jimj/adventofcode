@@ -1,4 +1,4 @@
-package net.jimj.adventofcode;
+package net.jimj.adventofcode.input;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

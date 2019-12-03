@@ -1,6 +1,6 @@
 package net.jimj.adventofcode.year2019;
 
-import net.jimj.adventofcode.AdventInput;
+import net.jimj.adventofcode.input.AdventInput;
 
 public class Day1 {
     public static void main(String[] args) {

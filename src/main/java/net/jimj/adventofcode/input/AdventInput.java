@@ -1,4 +1,4 @@
-package net.jimj.adventofcode;
+package net.jimj.adventofcode.input;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -52,6 +52,14 @@ public final class AdventInput {
     }
 
     /**
+     * Return the input as a stream of {@link DelimitedLine} with a comma as the assumed delimiter
+     */
+    public Stream<DelimitedLine> delimitedLines() {
+        return lines()
+                .map(DelimitedLine::commaDelimited);
+    }
+
+    /**
      * Return the input as a stream of integers.  Does not protect against conversion errors.
      */
     public IntStream ints() {
@@ -64,4 +72,6 @@ public final class AdventInput {
     public DoubleStream doubles() {
         return lines().mapToDouble(Double::parseDouble);
     }
+
+
 }
