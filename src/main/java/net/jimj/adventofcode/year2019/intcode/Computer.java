@@ -15,19 +15,20 @@ public class Computer {
         }
     }
 
-    public int compute(
+    public void compute(
             final Tape tape) {
 
         Instruction instruction;
         do {
-            final int opCode = tape.current();
+            final int opCode = tape.read();
             instruction = instructions.get(opCode);
 
             if (instruction == null) {
                 throw new IllegalStateException("No instruction for opCode " + opCode);
             }
-        } while (tape.accept(instruction));
 
-        return tape.head();
+            instruction.accept(tape);
+            tape.advance(instruction.getPointerSize());
+        } while (instruction.getPointerSize() > 0);
     }
 }

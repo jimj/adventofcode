@@ -18,12 +18,15 @@ public class Day2 {
                         new Multiply(),
                         new Halt()));
 
-        System.out.println("Part 1: " + computer.compute(initializeTape(12, 2)));
+        final Tape part1Tape = initializeTape(12, 2);
+        computer.compute(part1Tape);
+        System.out.println("Part 1: " + part1Tape.head());
 
         for (int x = 1 ; x < 100 ; x++) {
             for (int y = 1 ; y < 100 ; y++) {
-                final int result = computer.compute(initializeTape(x, y));
-                if (result == 19690720) {
+                final Tape part2Tape = initializeTape(x, y);
+                computer.compute(part2Tape);
+                if (part2Tape.head() == 19690720) {
                     final int answer = 100 * x + y;
                     System.out.println("Part 2: " + answer);
                 }

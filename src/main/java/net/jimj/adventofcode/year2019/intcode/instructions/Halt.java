@@ -1,6 +1,7 @@
 package net.jimj.adventofcode.year2019.intcode.instructions;
 
 import net.jimj.adventofcode.year2019.intcode.Instruction;
+import net.jimj.adventofcode.year2019.intcode.Tape;
 
 public class Halt implements Instruction {
     @Override
@@ -14,7 +15,6 @@ public class Halt implements Instruction {
     }
 
     @Override
-    public boolean visit(int[] memory, int pointer) {
-        return false;
+    public void accept(Tape tape) {
     }
 }

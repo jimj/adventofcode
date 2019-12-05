@@ -1,6 +1,7 @@
 package net.jimj.adventofcode.year2019.intcode;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 public final class Tape {
     private final int[] memory;
@@ -11,23 +12,27 @@ public final class Tape {
         this.memory = Arrays.copyOf(memory, memory.length);
     }
 
-    int head() {
+    public int head() {
         return memory[0];
     }
 
-    int current() {
+    public int read() {
         return memory[pointer];
     }
 
-    boolean accept(
-            final Instruction instruction) {
+    public Consumer<Integer> writeParameter(
+            final int parameterPosition) {
+        return (i) -> memory[memory[pointer + parameterPosition]] = i;
+    }
 
-        final boolean shouldAdvance = instruction.visit(memory, pointer);
+    public int readParameter(
+            final int parameterPosition) {
+        final int parameterValue = memory[pointer + parameterPosition];
+        return memory[parameterValue];
+    }
 
-        if (shouldAdvance) {
-            pointer += instruction.getPointerSize();
-        }
-
-        return shouldAdvance;
+    public void advance(
+            final int distance) {
+        pointer += distance;
     }
 }

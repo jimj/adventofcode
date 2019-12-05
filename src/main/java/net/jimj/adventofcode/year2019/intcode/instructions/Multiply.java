@@ -1,6 +1,9 @@
 package net.jimj.adventofcode.year2019.intcode.instructions;
 
 import net.jimj.adventofcode.year2019.intcode.Instruction;
+import net.jimj.adventofcode.year2019.intcode.Tape;
+
+import java.util.function.Consumer;
 
 public class Multiply implements Instruction {
     @Override
@@ -14,16 +17,14 @@ public class Multiply implements Instruction {
     }
 
     @Override
-    public boolean visit(
-            final int[] memory,
-            final int pointer) {
+    public void accept(
+            final Tape tape) {
 
-        final int operand1 = memory[memory[pointer + 1]];
-        final int operand2 = memory[memory[pointer + 2]];
+        final int operand1 = tape.readParameter(1);
+        final int operand2 = tape.readParameter(2);
+        final Consumer<Integer> resultWriter = tape.writeParameter(3);
+
         final int result = operand1 * operand2;
-
-        memory[memory[pointer + 3]] = result;
-
-        return true;
+        resultWriter.accept(result);
     }
 }
