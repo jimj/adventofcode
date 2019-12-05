@@ -2,11 +2,11 @@ package net.jimj.adventofcode.year2019.intcode;
 
 import java.util.Arrays;
 
-public class Tape {
+public final class Tape {
     private final int[] memory;
     private int pointer = 0;
 
-    Tape(
+    public Tape(
             final int[] memory) {
         this.memory = Arrays.copyOf(memory, memory.length);
     }
