@@ -31,6 +31,7 @@ public class Read implements SizedInstruction {
             final ParameterMode[] parameterModes) {
 
         final Consumer<Integer> resultWriter = tape.writeParameter(1, parameterModes);
+
         final int value = scanner.nextInt();
 
         resultWriter.accept(value);

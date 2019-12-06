@@ -6,6 +6,10 @@ import net.jimj.adventofcode.year2019.intcode.Computer;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 import net.jimj.adventofcode.year2019.intcode.instructions.Add;
 import net.jimj.adventofcode.year2019.intcode.instructions.Halt;
+import net.jimj.adventofcode.year2019.intcode.instructions.IsEqual;
+import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfFalse;
+import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfTrue;
+import net.jimj.adventofcode.year2019.intcode.instructions.LessThan;
 import net.jimj.adventofcode.year2019.intcode.instructions.Multiply;
 import net.jimj.adventofcode.year2019.intcode.instructions.Read;
 import net.jimj.adventofcode.year2019.intcode.instructions.Write;
@@ -20,6 +24,10 @@ public class Day5 {
                         new Multiply(),
                         new Read(System.in),
                         new Write(),
+                        new LessThan(),
+                        new IsEqual(),
+                        new JumpIfTrue(),
+                        new JumpIfFalse(),
                         new Halt()));
 
         final AdventInput input = new AdventInput(2019, 5);
@@ -30,7 +38,6 @@ public class Day5 {
 
         final Tape tape = new Tape(memory);
 
-        System.out.print("Enter system number: ");
         computer.compute(tape);
     }
 }
