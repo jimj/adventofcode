@@ -33,14 +33,11 @@ public class Computer {
             }
 
             instruction.accept(tape, parameterModes);
-            tape.advance(instruction.getPointerSize());
-        } while (instruction.getPointerSize() > 0);
+        } while (instruction.advance(tape));
     }
 
     /**
      * A parameter code is a 0 - 3 digit number.
-     * @param parameterCode
-     * @return
      */
     ParameterMode[] determineParameterModes(
             final int parameterCode) {

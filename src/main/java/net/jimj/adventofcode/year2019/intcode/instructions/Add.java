@@ -1,19 +1,19 @@
 package net.jimj.adventofcode.year2019.intcode.instructions;
 
-import net.jimj.adventofcode.year2019.intcode.Instruction;
 import net.jimj.adventofcode.year2019.intcode.ParameterMode;
+import net.jimj.adventofcode.year2019.intcode.SizedInstruction;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 
 import java.util.function.Consumer;
 
-public class Add implements Instruction {
+public class Add implements SizedInstruction {
     @Override
     public int getOpCode() {
         return 1;
     }
 
     @Override
-    public int getPointerSize() {
+    public int getSize() {
         return 4;
     }
 

@@ -1,14 +1,14 @@
 package net.jimj.adventofcode.year2019.intcode.instructions;
 
-import net.jimj.adventofcode.year2019.intcode.Instruction;
 import net.jimj.adventofcode.year2019.intcode.ParameterMode;
+import net.jimj.adventofcode.year2019.intcode.SizedInstruction;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 
 import java.io.InputStream;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
-public class Read implements Instruction {
+public class Read implements SizedInstruction {
     private final Scanner scanner;
 
     public Read(final InputStream inputStream) {
@@ -21,7 +21,7 @@ public class Read implements Instruction {
     }
 
     @Override
-    public int getPointerSize() {
+    public int getSize() {
         return 2;
     }
 

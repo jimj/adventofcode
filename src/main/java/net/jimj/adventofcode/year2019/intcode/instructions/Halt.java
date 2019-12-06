@@ -11,11 +11,11 @@ public class Halt implements Instruction {
     }
 
     @Override
-    public int getPointerSize() {
-        return 0;
+    public boolean advance(final Tape tape) {
+        return false;
     }
 
     @Override
-    public void accept(Tape tape, final ParameterMode[] parameterModes) {
+    public void accept(final Tape tape, final ParameterMode[] parameterModes) {
     }
 }

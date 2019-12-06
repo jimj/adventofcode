@@ -54,4 +54,9 @@ public final class Tape {
             final int distance) {
         pointer += distance;
     }
+
+    public void seek(
+            final int location) {
+        pointer = location;
+    }
 }
