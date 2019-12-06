@@ -21,14 +21,33 @@ public final class Tape {
     }
 
     public Consumer<Integer> writeParameter(
-            final int parameterPosition) {
-        return (i) -> memory[memory[pointer + parameterPosition]] = i;
+            final int parameterPosition,
+            final ParameterMode[] parameterModes) {
+
+        final ParameterMode parameterMode = parameterModes[parameterPosition - 1];
+        switch (parameterMode) {
+            case POSITIONAL:
+                return (i) -> memory[memory[pointer + parameterPosition]] = i;
+            case IMMEDIATE:
+                return (i) -> memory[pointer + parameterPosition] = i;
+            default:
+                throw new IllegalStateException("Unhandled ParameterMode " + parameterMode);
+        }
     }
 
     public int readParameter(
-            final int parameterPosition) {
-        final int parameterValue = memory[pointer + parameterPosition];
-        return memory[parameterValue];
+            final int parameterPosition,
+            final ParameterMode[] parameterModes) {
+
+        final ParameterMode parameterMode = parameterModes[parameterPosition - 1];
+        switch (parameterMode) {
+            case POSITIONAL:
+                return memory[memory[pointer + parameterPosition]];
+            case IMMEDIATE:
+                return memory[pointer + parameterPosition];
+            default:
+                throw new IllegalStateException("Unhandled ParameterMode " + parameterMode);
+        }
     }
 
     public void advance(

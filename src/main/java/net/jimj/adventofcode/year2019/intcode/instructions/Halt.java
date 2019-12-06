@@ -1,6 +1,7 @@
 package net.jimj.adventofcode.year2019.intcode.instructions;
 
 import net.jimj.adventofcode.year2019.intcode.Instruction;
+import net.jimj.adventofcode.year2019.intcode.ParameterMode;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 
 public class Halt implements Instruction {
@@ -15,6 +16,6 @@ public class Halt implements Instruction {
     }
 
     @Override
-    public void accept(Tape tape) {
+    public void accept(Tape tape, final ParameterMode[] parameterModes) {
     }
 }
