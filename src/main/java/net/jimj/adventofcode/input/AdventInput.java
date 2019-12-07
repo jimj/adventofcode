@@ -60,6 +60,14 @@ public final class AdventInput {
     }
 
     /**
+     * Return the input as a stream of {@link DelimitedLine} with a comma as the assumed delimiter
+     */
+    public Stream<DelimitedLine> delimitedLines(final char delimiter) {
+        return lines()
+                .map(line -> new DelimitedLine(line, delimiter));
+    }
+
+    /**
      * Return the input as a stream of integers.  Does not protect against conversion errors.
      */
     public IntStream ints() {

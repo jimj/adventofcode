@@ -11,7 +11,7 @@ public final class DelimitedLine {
     private final String line;
     private final char delimiter;
 
-    static DelimitedLine commaDelimited(
+    public static DelimitedLine commaDelimited(
             final String line) {
         return new DelimitedLine(line, ',');
     }
@@ -24,11 +24,15 @@ public final class DelimitedLine {
     }
 
     public Stream<String> strings() {
-        return Arrays.stream(line.split(""+delimiter));
+        return Arrays.stream(split());
     }
 
     public IntStream ints() {
         return strings().mapToInt(Integer::parseInt);
+    }
+
+    public String[] split() {
+        return line.split(""+delimiter);
     }
 }
 
