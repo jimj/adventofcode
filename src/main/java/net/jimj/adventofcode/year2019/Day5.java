@@ -4,17 +4,6 @@ import net.jimj.adventofcode.input.AdventInput;
 import net.jimj.adventofcode.input.DelimitedLine;
 import net.jimj.adventofcode.year2019.intcode.Computer;
 import net.jimj.adventofcode.year2019.intcode.Tape;
-import net.jimj.adventofcode.year2019.intcode.instructions.Add;
-import net.jimj.adventofcode.year2019.intcode.instructions.Halt;
-import net.jimj.adventofcode.year2019.intcode.instructions.IsEqual;
-import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfFalse;
-import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfTrue;
-import net.jimj.adventofcode.year2019.intcode.instructions.LessThan;
-import net.jimj.adventofcode.year2019.intcode.instructions.Multiply;
-import net.jimj.adventofcode.year2019.intcode.instructions.Read;
-import net.jimj.adventofcode.year2019.intcode.instructions.Write;
-
-import java.util.Arrays;
 
 public class Day5 {
     public static void main(String[] args) {
@@ -30,6 +19,14 @@ public class Day5 {
                 .toArray();
 
         final Tape tape = new Tape(memory);
-        return Computer.STANDARD.compute(tape, controllerId)[0];
+        final Computer computer = Computer.standard();
+        computer.compute(tape, controllerId);
+
+        int diagnosticCode = 0;
+        while (diagnosticCode == 0) {
+            diagnosticCode = computer.output();
+        }
+
+        return diagnosticCode;
     }
 }

@@ -1,21 +1,13 @@
 package net.jimj.adventofcode.year2019.intcode.instructions;
 
-import net.jimj.adventofcode.year2019.intcode.InputInstruction;
+import net.jimj.adventofcode.year2019.intcode.IOInstruction;
 import net.jimj.adventofcode.year2019.intcode.ParameterMode;
 import net.jimj.adventofcode.year2019.intcode.SizedInstruction;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
-public class Read implements SizedInstruction, InputInstruction {
-    private CompletableFuture<Integer> input = new CompletableFuture<>();
-
+public class Read extends IOInstruction implements SizedInstruction {
     @Override
     public int getOpCode() {
         return 3;
@@ -33,20 +25,7 @@ public class Read implements SizedInstruction, InputInstruction {
 
         final Consumer<Integer> resultWriter = tape.writeParameter(1, parameterModes);
 
-        try {
-            final int value = input.get();
-            resultWriter.accept(value);
-            input = new CompletableFuture<>();
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } catch (final ExecutionException e) {
-            throw new UncheckedIOException(new IOException(e));
-        }
-
-    }
-
-    @Override
-    public void acceptInput(int input) {
-        this.input.complete(input);
+        final int value = nextInput();
+        resultWriter.accept(value);
     }
 }

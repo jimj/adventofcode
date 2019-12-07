@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class Day2 {
     public static void main(String[] args) {
-        final Computer computer = Computer.STANDARD;
+        final Computer computer = Computer.standard();
 
         final Tape part1Tape = initializeTape(12, 2);
         computer.compute(part1Tape);

@@ -14,21 +14,27 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Computer {
     private Map<Integer, Instruction> instructions = new HashMap<>();
+    private BlockingQueue<Integer> inputQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<Integer> outputQueue = new LinkedBlockingQueue<>();
 
-    public static final Computer STANDARD = new Computer(
-            Arrays.asList(
-                    new Add(),
-                    new Multiply(),
-                    new Read(),
-                    new Write(),
-                    new LessThan(),
-                    new IsEqual(),
-                    new JumpIfTrue(),
-                    new JumpIfFalse(),
-                    new Halt()));
+    public static Computer standard() {
+        return new Computer(
+                Arrays.asList(
+                        new Add(),
+                        new Multiply(),
+                        new Read(),
+                        new Write(),
+                        new LessThan(),
+                        new IsEqual(),
+                        new JumpIfTrue(),
+                        new JumpIfFalse(),
+                        new Halt()));
+    }
 
     public Computer(
             final Collection<Instruction> instructions) {
@@ -37,11 +43,12 @@ public class Computer {
         }
     }
 
-    public int[] compute(
+    public void compute(
             final Tape tape,
             int... input) {
 
-        int nextInput = 0;
+        Arrays.stream(input).forEach(this::input);
+
         Instruction instruction;
         do {
             //An instruction code is made up of an op code, which is the trailing 2 digits
@@ -56,18 +63,36 @@ public class Computer {
                 throw new IllegalStateException("No instruction for opCode " + opCode);
             }
 
-            if (instruction instanceof InputInstruction) {
-                ((InputInstruction)instruction).acceptInput(input[nextInput]);
-                nextInput++;
+            if (instruction instanceof IOInstruction) {
+                ((IOInstruction) instruction).withInput(this::getNextInput);
+                ((IOInstruction) instruction).withOutput(outputQueue::add);
             }
 
             instruction.accept(tape, parameterModes);
         } while (instruction.advance(tape));
+    }
 
-        return instructions.values().stream()
-                .filter(i -> i instanceof OutputInstruction)
-                .mapToInt(i -> ((OutputInstruction)i).getOutput())
-                .toArray();
+    public void input(
+            final int input) {
+        inputQueue.add(input);
+    }
+
+    private int getNextInput() {
+        try {
+            return inputQueue.take();
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return Integer.MIN_VALUE;
+        }
+    }
+
+    public int output() {
+        try {
+            return outputQueue.take();
+        } catch (final InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return Integer.MIN_VALUE;
+        }
     }
 
     /**
