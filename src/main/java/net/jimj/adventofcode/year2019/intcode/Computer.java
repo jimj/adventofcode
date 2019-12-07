@@ -1,5 +1,16 @@
 package net.jimj.adventofcode.year2019.intcode;
 
+import net.jimj.adventofcode.year2019.intcode.instructions.Add;
+import net.jimj.adventofcode.year2019.intcode.instructions.Halt;
+import net.jimj.adventofcode.year2019.intcode.instructions.IsEqual;
+import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfFalse;
+import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfTrue;
+import net.jimj.adventofcode.year2019.intcode.instructions.LessThan;
+import net.jimj.adventofcode.year2019.intcode.instructions.Multiply;
+import net.jimj.adventofcode.year2019.intcode.instructions.Read;
+import net.jimj.adventofcode.year2019.intcode.instructions.Write;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,17 +18,30 @@ import java.util.Map;
 public class Computer {
     private Map<Integer, Instruction> instructions = new HashMap<>();
 
+    public static final Computer STANDARD = new Computer(
+            Arrays.asList(
+                    new Add(),
+                    new Multiply(),
+                    new Read(),
+                    new Write(),
+                    new LessThan(),
+                    new IsEqual(),
+                    new JumpIfTrue(),
+                    new JumpIfFalse(),
+                    new Halt()));
+
     public Computer(
             final Collection<Instruction> instructions) {
-
         for (final Instruction instruction : instructions) {
             this.instructions.put(instruction.getOpCode(), instruction);
         }
     }
 
-    public void compute(
-            final Tape tape) {
+    public int[] compute(
+            final Tape tape,
+            int... input) {
 
+        int nextInput = 0;
         Instruction instruction;
         do {
             //An instruction code is made up of an op code, which is the trailing 2 digits
@@ -32,8 +56,18 @@ public class Computer {
                 throw new IllegalStateException("No instruction for opCode " + opCode);
             }
 
+            if (instruction instanceof InputInstruction) {
+                ((InputInstruction)instruction).acceptInput(input[nextInput]);
+                nextInput++;
+            }
+
             instruction.accept(tape, parameterModes);
         } while (instruction.advance(tape));
+
+        return instructions.values().stream()
+                .filter(i -> i instanceof OutputInstruction)
+                .mapToInt(i -> ((OutputInstruction)i).getOutput())
+                .toArray();
     }
 
     /**
