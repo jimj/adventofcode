@@ -10,9 +10,11 @@ import net.jimj.adventofcode.year2019.intcode.instructions.Multiply;
 import net.jimj.adventofcode.year2019.intcode.instructions.Read;
 import net.jimj.adventofcode.year2019.intcode.instructions.Write;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -41,6 +43,13 @@ public class Computer {
         for (final Instruction instruction : instructions) {
             this.instructions.put(instruction.getOpCode(), instruction);
         }
+
+        for (final Instruction instruction : this.instructions.values()) {
+            if (instruction instanceof IOInstruction) {
+                ((IOInstruction) instruction).withInput(this::getNextInput);
+                ((IOInstruction) instruction).withOutput(this::offerOutput);
+            }
+        }
     }
 
     public void compute(
@@ -63,11 +72,6 @@ public class Computer {
                 throw new IllegalStateException("No instruction for opCode " + opCode);
             }
 
-            if (instruction instanceof IOInstruction) {
-                ((IOInstruction) instruction).withInput(this::getNextInput);
-                ((IOInstruction) instruction).withOutput(outputQueue::add);
-            }
-
             instruction.accept(tape, parameterModes);
         } while (instruction.advance(tape));
     }
@@ -75,6 +79,11 @@ public class Computer {
     public void input(
             final int input) {
         inputQueue.add(input);
+    }
+
+    public void load(
+            final List<Integer> batch) {
+        batch.forEach(this::input);
     }
 
     private int getNextInput() {
@@ -93,6 +102,16 @@ public class Computer {
             Thread.currentThread().interrupt();
             return Integer.MIN_VALUE;
         }
+    }
+
+    public List<Integer> drain() {
+        final List<Integer> result = new ArrayList<>();
+        outputQueue.drainTo(result);
+        return result;
+    }
+
+    private void offerOutput(final int value) {
+        outputQueue.add(value);
     }
 
     /**
