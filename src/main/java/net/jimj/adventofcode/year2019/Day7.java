@@ -35,11 +35,6 @@ public class Day7 {
         });
 
         System.out.println("Highest signal (in series): " + highestSignal);
-        try {
-            Thread.sleep(3000);
-        } catch (final Exception e) {
-
-        }
 
         new Permutation<>(Arrays.asList(5, 6, 7, 8, 9)).apply(phases -> {
             final Amplifier amplifier = new Amplifier();
