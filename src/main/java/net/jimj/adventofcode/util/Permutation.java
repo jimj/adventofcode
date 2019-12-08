@@ -8,11 +8,6 @@ import java.util.function.Consumer;
 public class Permutation<T> {
     private final List<T> items = new ArrayList<>();
 
-    public static void main(String[] args) {
-        final Permutation<Integer> permutation = new Permutation<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
-        permutation.apply(System.out::println);
-    }
-
     public Permutation(
             final List<T> collection) {
         items.addAll(collection);
