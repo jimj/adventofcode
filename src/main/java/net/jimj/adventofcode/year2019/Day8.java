@@ -54,7 +54,7 @@ public class Day8 {
         Stream<List<Integer>> layers() {
             final Stream.Builder<List<Integer>> streamBuilder = Stream.builder();
 
-            for (int i = 0; i < (data.length() - layerSize()); i+= layerSize()) {
+            for (int i = 0; i < (data.length() - layerSize() + 1); i+= layerSize()) {
                 final String subString = data.substring(i, i + layerSize());
                 final List<Integer> subList = Arrays.stream(subString.split(""))
                         .map(Integer::parseInt)
