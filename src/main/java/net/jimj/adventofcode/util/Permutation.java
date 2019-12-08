@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * A Permutation utility to apply logic to all the permutations of a sequence.
+ */
 public class Permutation<T> {
     private final List<T> items = new ArrayList<>();
 
@@ -13,6 +16,14 @@ public class Permutation<T> {
         items.addAll(collection);
     }
 
+    public Permutation(
+            T... items) {
+        this(Arrays.asList(items));
+    }
+
+    /**
+     * {@link Consumer} apply is called for every permutation of the initial sequence.
+     */
     public void apply(
             final Consumer<List<T>> process) {
 

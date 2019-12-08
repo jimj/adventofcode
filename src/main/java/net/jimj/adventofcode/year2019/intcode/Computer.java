@@ -19,11 +19,19 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * An IntCode {@link Computer} executes {@link Instruction}s against a {@link Tape}.
+ * It provides input/output utilities.
+ */
 public class Computer {
     private Map<Integer, Instruction> instructions = new HashMap<>();
     private BlockingQueue<Integer> inputQueue = new LinkedBlockingQueue<>();
     private BlockingQueue<Integer> outputQueue = new LinkedBlockingQueue<>();
 
+    /**
+     * A standard computer that supports all known IntCode instructions.
+     * @return
+     */
     public static Computer standard() {
         return new Computer(
                 Arrays.asList(
@@ -52,6 +60,9 @@ public class Computer {
         }
     }
 
+    /**
+     * Compute the tape with optional input in the input buffer.
+     */
     public void compute(
             final Tape tape,
             int... input) {
@@ -76,11 +87,17 @@ public class Computer {
         } while (instruction.advance(tape));
     }
 
+    /**
+     * Supply input to the {@link Computer}.
+     */
     public void input(
             final int input) {
         inputQueue.add(input);
     }
 
+    /**
+     * Load a batch of input into the {@link Computer}.
+     */
     public void load(
             final List<Integer> batch) {
         batch.forEach(this::input);
@@ -95,6 +112,11 @@ public class Computer {
         }
     }
 
+    /**
+     * Read an output from the {@link Computer}
+     *
+     * This call blocks until input is available.
+     */
     public int output() {
         try {
             return outputQueue.take();
@@ -104,6 +126,11 @@ public class Computer {
         }
     }
 
+    /**
+     * Read all available output from the {@link Computer}
+     *
+     * This is a non-blocking call.
+     */
     public List<Integer> drain() {
         final List<Integer> result = new ArrayList<>();
         outputQueue.drainTo(result);
@@ -115,7 +142,8 @@ public class Computer {
     }
 
     /**
-     * A parameter code is a 0 - 3 digit number.
+     * Parse a full parameter code into individual parameter codes.
+     * e.g. parameterCode 101 parses to [IMMEDIATE, POSITIONAL, IMMEDIATE]
      */
     ParameterMode[] determineParameterModes(
             final int parameterCode) {

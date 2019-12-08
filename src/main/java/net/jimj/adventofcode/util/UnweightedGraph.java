@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 public class UnweightedGraph<T> {
     private final Map<T, Set<T>> edges = new HashMap<>();
 
+    /**
+     * Add an edge between 2 vertices.  If a vertex has not been seen, it is created.
+     */
     public void addEdge(
             final T first,
             final T second) {
@@ -21,6 +24,9 @@ public class UnweightedGraph<T> {
                 .add(first);
     }
 
+    /**
+     * Find the shortest path between 2 vertices, using Dijkstra's algorithm.
+     */
     public int dijkstra(
             final T start,
             final T end) {
@@ -28,6 +34,9 @@ public class UnweightedGraph<T> {
         return dijkstra(start).get(end);
     }
 
+    /**
+     * Find the shortest path map for the given vertex, using Dijkstra's algorithm.
+     */
     public Map<T, Integer> dijkstra(
             final T source) {
 

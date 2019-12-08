@@ -25,7 +25,7 @@ public class Day7 {
     public static void main(String[] args) {
         final AtomicInteger highestSignal = new AtomicInteger(0);
 
-        new Permutation<>(Arrays.asList(0, 1, 2, 3, 4)).apply(phases -> {
+        new Permutation<>(0, 1, 2, 3, 4).apply(phases -> {
             final Amplifier amplifier = new Amplifier();
             phases.forEach(amplifier::addPhase);
             amplifier.configureAsSeries();
@@ -36,7 +36,7 @@ public class Day7 {
 
         System.out.println("Highest signal (in series): " + highestSignal);
 
-        new Permutation<>(Arrays.asList(5, 6, 7, 8, 9)).apply(phases -> {
+        new Permutation<>(5, 6, 7, 8, 9).apply(phases -> {
             final Amplifier amplifier = new Amplifier();
             phases.forEach(amplifier::addPhase);
             amplifier.configureAsLoop();

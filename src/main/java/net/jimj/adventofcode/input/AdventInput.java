@@ -60,7 +60,7 @@ public final class AdventInput {
     }
 
     /**
-     * Return the input as a stream of {@link DelimitedLine} with a comma as the assumed delimiter
+     * Return the input as a stream of {@link DelimitedLine} with the supplied delimiter
      */
     public Stream<DelimitedLine> delimitedLines(final char delimiter) {
         return lines()
