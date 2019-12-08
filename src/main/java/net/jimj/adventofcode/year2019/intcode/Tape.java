@@ -1,5 +1,8 @@
 package net.jimj.adventofcode.year2019.intcode;
 
+import net.jimj.adventofcode.input.AdventInput;
+import net.jimj.adventofcode.input.DelimitedLine;
+
 import java.util.Arrays;
 import java.util.function.Consumer;
 
@@ -9,6 +12,18 @@ import java.util.function.Consumer;
 public final class Tape {
     private final int[] memory;
     private int pointer = 0;
+
+    public static Tape forInput(
+            final int year,
+            final int day) {
+
+        final int[] memory = new AdventInput(year, day)
+                .delimitedLines()
+                .flatMapToInt(DelimitedLine::ints)
+                .toArray();
+
+        return new Tape(memory);
+    }
 
     /**
      * Makes a copy of the memory supplied to protect from external modification.

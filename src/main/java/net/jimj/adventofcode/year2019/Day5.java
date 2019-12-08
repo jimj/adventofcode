@@ -1,7 +1,5 @@
 package net.jimj.adventofcode.year2019;
 
-import net.jimj.adventofcode.input.AdventInput;
-import net.jimj.adventofcode.input.DelimitedLine;
 import net.jimj.adventofcode.year2019.intcode.Computer;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 
@@ -13,14 +11,10 @@ public class Day5 {
 
     private static int compute(
             final int controllerId) {
-        final AdventInput input = new AdventInput(2019, 5);
-        final int[] memory = input.delimitedLines()
-                .flatMapToInt(DelimitedLine::ints)
-                .toArray();
-
-        final Tape tape = new Tape(memory);
         final Computer computer = Computer.standard();
-        computer.compute(tape, controllerId);
+        computer.compute(
+                Tape.forInput(2019, 5),
+                controllerId);
 
         int diagnosticCode = 0;
         while (diagnosticCode == 0) {

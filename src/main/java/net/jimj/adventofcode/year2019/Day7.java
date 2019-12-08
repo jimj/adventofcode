@@ -56,18 +56,14 @@ public class Day7 {
 
         void addPhase(
                 final int phaseSetting) {
-            final AdventInput input = new AdventInput(2019, 7);
-            final int[] memory = input.delimitedLines()
-                    .flatMapToInt(DelimitedLine::ints)
-                    .toArray();
-            final Tape tape = new Tape(memory);
-
             final Computer phase = Computer.standard();
 
             phases.add(phase);
             phaseCompletions.put(
                     phase,
-                    CompletableFuture.runAsync(() -> phase.compute(tape, phaseSetting), phaseExecutor));
+                    CompletableFuture.runAsync(
+                            () -> phase.compute(Tape.forInput(2019, 7), phaseSetting),
+                            phaseExecutor));
         }
 
         void configureAsSeries() {
