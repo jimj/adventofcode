@@ -24,6 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * It provides input/output utilities.
  */
 public class Computer {
+    private boolean isDebug = false;
     private Map<Integer, Instruction> instructions = new HashMap<>();
     private BlockingQueue<Integer> inputQueue = new LinkedBlockingQueue<>();
     private BlockingQueue<Integer> outputQueue = new LinkedBlockingQueue<>();
@@ -67,6 +68,10 @@ public class Computer {
             final Tape tape,
             int... input) {
 
+        if (isDebug) {
+            tape.debug();
+        }
+
         Arrays.stream(input).forEach(this::input);
 
         Instruction instruction;
@@ -83,8 +88,16 @@ public class Computer {
                 throw new IllegalStateException("No instruction for opCode " + opCode);
             }
 
+            if (isDebug) {
+                System.out.println("Executing instruction " + instruction.getClass().getSimpleName());
+            }
             instruction.accept(tape, parameterModes);
         } while (instruction.advance(tape));
+    }
+
+    public Computer debug() {
+        isDebug = true;
+        return this;
     }
 
     /**
@@ -92,6 +105,9 @@ public class Computer {
      */
     public void input(
             final int input) {
+        if (isDebug) {
+            System.out.println("Got input " + input);
+        }
         inputQueue.add(input);
     }
 
@@ -100,10 +116,16 @@ public class Computer {
      */
     public void load(
             final List<Integer> batch) {
+        if (isDebug) {
+            System.out.println("Got batch input of size " + batch.size());
+        }
         batch.forEach(this::input);
     }
 
     private int getNextInput() {
+        if (isDebug) {
+            System.out.println("Polling for input");
+        }
         try {
             return inputQueue.take();
         } catch (final InterruptedException e) {
@@ -118,6 +140,9 @@ public class Computer {
      * This call blocks until input is available.
      */
     public int output() {
+        if (isDebug) {
+            System.out.println("Polling for output");
+        }
         try {
             return outputQueue.take();
         } catch (final InterruptedException e) {
@@ -134,10 +159,16 @@ public class Computer {
     public List<Integer> drain() {
         final List<Integer> result = new ArrayList<>();
         outputQueue.drainTo(result);
+        if (isDebug) {
+            System.out.println("Draining output into batch of size " + result.size());
+        }
         return result;
     }
 
     private void offerOutput(final int value) {
+        if (isDebug) {
+            System.out.println("Output provided: " + value);
+        }
         outputQueue.add(value);
     }
 

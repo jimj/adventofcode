@@ -4,11 +4,6 @@ import net.jimj.adventofcode.input.AdventInput;
 import net.jimj.adventofcode.input.DelimitedLine;
 import net.jimj.adventofcode.year2019.intcode.Computer;
 import net.jimj.adventofcode.year2019.intcode.Tape;
-import net.jimj.adventofcode.year2019.intcode.instructions.Add;
-import net.jimj.adventofcode.year2019.intcode.instructions.Halt;
-import net.jimj.adventofcode.year2019.intcode.instructions.Multiply;
-
-import java.util.Arrays;
 
 public class Day2 {
     public static void main(String[] args) {

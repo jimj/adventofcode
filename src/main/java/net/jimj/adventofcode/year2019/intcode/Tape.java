@@ -10,6 +10,7 @@ import java.util.function.Consumer;
  * Tape is a chunk of memory that can be read from and written to.
  */
 public final class Tape {
+    private boolean isDebug = false;
     private final int[] memory;
     private int pointer = 0;
 
@@ -31,6 +32,10 @@ public final class Tape {
     public Tape(
             final int[] memory) {
         this.memory = Arrays.copyOf(memory, memory.length);
+    }
+
+    void debug() {
+        isDebug = true;
     }
 
     /**
@@ -55,14 +60,14 @@ public final class Tape {
             final ParameterMode[] parameterModes) {
 
         final ParameterMode parameterMode = parameterModes[parameterPosition - 1];
-        switch (parameterMode) {
-            case POSITIONAL:
-                return (i) -> memory[memory[pointer + parameterPosition]] = i;
-            case IMMEDIATE:
-                return (i) -> memory[pointer + parameterPosition] = i;
-            default:
-                throw new IllegalStateException("Unhandled ParameterMode " + parameterMode);
-        }
+        final int parameterPointer = calculateParameterPointer(parameterPosition, parameterMode);
+
+        return (writeVal) -> {
+            if (isDebug) {
+                System.out.println("\t" + parameterMode + " WRITE memory[" + parameterPointer + "] <= " + writeVal);
+            }
+            memory[parameterPointer] = writeVal;
+        };
     }
 
     /**
@@ -73,11 +78,27 @@ public final class Tape {
             final ParameterMode[] parameterModes) {
 
         final ParameterMode parameterMode = parameterModes[parameterPosition - 1];
+        final int parameterPointer = calculateParameterPointer(parameterPosition, parameterMode);
+
+        final int parameterValue = memory[parameterPointer];
+
+        if (isDebug) {
+            System.out.println("\t" + parameterMode + " READ memory[" + parameterPointer + "] => " + parameterValue);
+        }
+
+        return parameterValue;
+    }
+
+    private int calculateParameterPointer(
+            final int parameterPosition,
+            final ParameterMode parameterMode) {
+        final int pointerOffset = pointer + parameterPosition;
+
         switch (parameterMode) {
             case POSITIONAL:
-                return memory[memory[pointer + parameterPosition]];
+                return memory[pointerOffset];
             case IMMEDIATE:
-                return memory[pointer + parameterPosition];
+                return pointerOffset;
             default:
                 throw new IllegalStateException("Unhandled ParameterMode " + parameterMode);
         }

@@ -1,25 +1,18 @@
 package net.jimj.adventofcode.year2019;
 
-import net.jimj.adventofcode.input.AdventInput;
-import net.jimj.adventofcode.input.DelimitedLine;
 import net.jimj.adventofcode.util.Permutation;
 import net.jimj.adventofcode.year2019.intcode.Computer;
 import net.jimj.adventofcode.year2019.intcode.Tape;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class Day7 {
     public static void main(String[] args) {
