@@ -57,12 +57,13 @@ public class Day7 {
         void addPhase(
                 final int phaseSetting) {
             final Computer phase = Computer.standard();
+            final Tape tape = Tape.forInput(2019, 7);
 
             phases.add(phase);
             phaseCompletions.put(
                     phase,
                     CompletableFuture.runAsync(
-                            () -> phase.compute(Tape.forInput(2019, 7), phaseSetting),
+                            () -> phase.compute(tape, phaseSetting),
                             phaseExecutor));
         }
 
