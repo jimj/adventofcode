@@ -24,7 +24,7 @@ public final class Tape {
                 .flatMapToLong(DelimitedLine::longs)
                 .toArray();
 
-        return new Tape(memory);
+        return new Tape(memory, 5000);
     }
 
     /**
