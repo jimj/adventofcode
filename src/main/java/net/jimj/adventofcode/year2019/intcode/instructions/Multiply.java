@@ -22,11 +22,11 @@ public class Multiply implements SizedInstruction {
             final Tape tape,
             final ParameterMode[] parameterModes) {
 
-        final int operand1 = tape.readParameter(1, parameterModes);
-        final int operand2 = tape.readParameter(2, parameterModes);
-        final Consumer<Integer> resultWriter = tape.writeParameter(3, parameterModes);
+        final long operand1 = tape.readParameter(1, parameterModes);
+        final long operand2 = tape.readParameter(2, parameterModes);
+        final Consumer<Long> resultWriter = tape.writeParameter(3, parameterModes);
 
-        final int result = operand1 * operand2;
+        final long result = operand1 * operand2;
         resultWriter.accept(result);
     }
 }

@@ -22,14 +22,14 @@ public class IsEqual implements SizedInstruction {
             final Tape tape,
             final ParameterMode[] parameterModes) {
 
-        final int operand1 = tape.readParameter(1, parameterModes);
-        final int operand2 = tape.readParameter(2, parameterModes);
-        final Consumer<Integer> resultWriter = tape.writeParameter(3, parameterModes);
+        final long operand1 = tape.readParameter(1, parameterModes);
+        final long operand2 = tape.readParameter(2, parameterModes);
+        final Consumer<Long> resultWriter = tape.writeParameter(3, parameterModes);
 
         if (operand1 == operand2) {
-            resultWriter.accept(1);
+            resultWriter.accept(1L);
         } else {
-            resultWriter.accept(0);
+            resultWriter.accept(0L);
         }
     }
 }

@@ -21,7 +21,7 @@ public class Write extends IOInstruction implements SizedInstruction {
             final Tape tape,
             final ParameterMode[] parameterModes) {
 
-        final int value = tape.readParameter(1, parameterModes);
+        final long value = tape.readParameter(1, parameterModes);
         sendOutput(value);
     }
 }

@@ -30,9 +30,9 @@ public class Day2 {
             final int verb) {
 
         final AdventInput input = new AdventInput(2019, 2);
-        final int[] memory = input
+        final long[] memory = input
                 .delimitedLines()
-                .flatMapToInt(DelimitedLine::ints)
+                .flatMapToLong(DelimitedLine::longs)
                 .toArray();
 
         memory[1] = noun;

@@ -11,16 +11,16 @@ import java.util.function.Consumer;
  */
 public final class Tape {
     private boolean isDebug = false;
-    private final int[] memory;
+    private final long[] memory;
     private int pointer = 0;
 
     public static Tape forInput(
             final int year,
             final int day) {
 
-        final int[] memory = new AdventInput(year, day)
+        final long[] memory = new AdventInput(year, day)
                 .delimitedLines()
-                .flatMapToInt(DelimitedLine::ints)
+                .flatMapToLong(DelimitedLine::longs)
                 .toArray();
 
         return new Tape(memory);
@@ -30,7 +30,7 @@ public final class Tape {
      * Makes a copy of the memory supplied to protect from external modification.
      */
     public Tape(
-            final int[] memory) {
+            final long[] memory) {
         this(memory, 0);
     }
 
@@ -40,7 +40,7 @@ public final class Tape {
      * @param additionalMemory - the amount of additional memory to allocation for reads/writes.
      */
     public Tape(
-            final int[] memory,
+            final long[] memory,
             final int additionalMemory) {
         this.memory = Arrays.copyOf(memory, memory.length + additionalMemory);
     }
@@ -52,21 +52,21 @@ public final class Tape {
     /**
      * Read the first cell of memory.
      */
-    public int head() {
+    public long head() {
         return memory[0];
     }
 
     /**
      * Read memory located at the current pointer location.
      */
-    public int read() {
+    public long read() {
         return memory[pointer];
     }
 
     /**
      * When a value is applied to the {@link Consumer} returned, that value is written to the memory location indicated by the parameter.
      */
-    public Consumer<Integer> writeParameter(
+    public Consumer<Long> writeParameter(
             final int parameterPosition,
             final ParameterMode[] parameterModes) {
 
@@ -84,14 +84,14 @@ public final class Tape {
     /**
      * Reads the memory location indicated by the parameter.
      */
-    public int readParameter(
+    public long readParameter(
             final int parameterPosition,
             final ParameterMode[] parameterModes) {
 
         final ParameterMode parameterMode = parameterModes[parameterPosition - 1];
         final int parameterPointer = calculateParameterPointer(parameterPosition, parameterMode);
 
-        final int parameterValue = memory[parameterPointer];
+        final long parameterValue = memory[parameterPointer];
 
         if (isDebug) {
             System.out.println("\t" + parameterMode + " READ memory[" + parameterPointer + "] => " + parameterValue);
@@ -107,7 +107,12 @@ public final class Tape {
 
         switch (parameterMode) {
             case POSITIONAL:
-                return memory[pointerOffset];
+                final long parameterPointer = memory[pointerOffset];
+                if (parameterPointer > Integer.MAX_VALUE) {
+                    throw new ArrayIndexOutOfBoundsException("Cannot reference memory at location " + parameterPointer);
+                }
+
+                return (int) parameterPointer;
             case IMMEDIATE:
                 return pointerOffset;
             default:

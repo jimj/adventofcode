@@ -23,9 +23,9 @@ public class Read extends IOInstruction implements SizedInstruction {
             final Tape tape,
             final ParameterMode[] parameterModes) {
 
-        final Consumer<Integer> resultWriter = tape.writeParameter(1, parameterModes);
+        final Consumer<Long> resultWriter = tape.writeParameter(1, parameterModes);
 
-        final int value = nextInput();
+        final long value = nextInput();
         resultWriter.accept(value);
     }
 }

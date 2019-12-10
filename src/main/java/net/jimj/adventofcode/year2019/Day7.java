@@ -13,17 +13,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Day7 {
     public static void main(String[] args) {
-        final AtomicInteger highestSignal = new AtomicInteger(0);
+        final AtomicLong highestSignal = new AtomicLong(0);
 
         new Permutation<>(0, 1, 2, 3, 4).apply(phases -> {
             final Amplifier amplifier = new Amplifier();
             phases.forEach(amplifier::addPhase);
             amplifier.configureAsSeries();
 
-            final int amplifiedSignal = amplifier.calculate();
+            final long amplifiedSignal = amplifier.calculate();
             highestSignal.getAndUpdate(val -> Math.max(val, amplifiedSignal));
         });
 
@@ -34,7 +35,7 @@ public class Day7 {
             phases.forEach(amplifier::addPhase);
             amplifier.configureAsLoop();
 
-            final int amplifiedSignal = amplifier.calculate();
+            final long amplifiedSignal = amplifier.calculate();
             highestSignal.getAndUpdate(val -> Math.max(val, amplifiedSignal));
         });
 
@@ -71,7 +72,7 @@ public class Day7 {
             network.put(phases.get(phases.size() - 1), phases.get(0));
         }
 
-        int calculate() {
+        long calculate() {
             if (network.isEmpty()) {
                 throw new IllegalStateException("The amplifiers must first be configured.");
             }

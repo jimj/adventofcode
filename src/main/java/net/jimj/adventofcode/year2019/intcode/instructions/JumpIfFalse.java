@@ -29,7 +29,7 @@ public class JumpIfFalse implements Instruction {
         final boolean shouldJump = tape.readParameter(1, parameterModes) == 0;
 
         if (shouldJump) {
-            final int location = tape.readParameter(2, parameterModes);
+            final int location = (int) tape.readParameter(2, parameterModes);
             advanceHandler = (t) -> t.seek(location);
         } else {
             advanceHandler = (t) -> t.advance(3);

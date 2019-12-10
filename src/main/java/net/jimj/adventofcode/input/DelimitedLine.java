@@ -2,6 +2,7 @@ package net.jimj.adventofcode.input;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 /**
@@ -29,6 +30,10 @@ public final class DelimitedLine {
 
     public IntStream ints() {
         return strings().mapToInt(Integer::parseInt);
+    }
+
+    public LongStream longs() {
+        return strings().mapToLong(Long::parseLong);
     }
 
     public String[] split() {

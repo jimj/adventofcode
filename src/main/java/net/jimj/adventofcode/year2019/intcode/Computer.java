@@ -26,12 +26,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Computer {
     private boolean isDebug = false;
     private Map<Integer, Instruction> instructions = new HashMap<>();
-    private BlockingQueue<Integer> inputQueue = new LinkedBlockingQueue<>();
-    private BlockingQueue<Integer> outputQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<Long> inputQueue = new LinkedBlockingQueue<>();
+    private BlockingQueue<Long> outputQueue = new LinkedBlockingQueue<>();
 
     /**
      * A standard computer that supports all known IntCode instructions.
-     * @return
      */
     public static Computer standard() {
         return new Computer(
@@ -78,7 +77,7 @@ public class Computer {
         do {
             //An instruction code is made up of an op code, which is the trailing 2 digits
             //and parameterModes, which is the remaining leading digits of the instructionCode.
-            final int instructionCode = tape.read();
+            final int instructionCode = (int) tape.read();
 
             final int opCode = instructionCode % 100;
             instruction = instructions.get(opCode);
@@ -104,7 +103,7 @@ public class Computer {
      * Supply input to the {@link Computer}.
      */
     public void input(
-            final int input) {
+            final long input) {
         if (isDebug) {
             System.out.println("Got input " + input);
         }
@@ -115,14 +114,14 @@ public class Computer {
      * Load a batch of input into the {@link Computer}.
      */
     public void load(
-            final List<Integer> batch) {
+            final List<Long> batch) {
         if (isDebug) {
             System.out.println("Got batch input of size " + batch.size());
         }
         batch.forEach(this::input);
     }
 
-    private int getNextInput() {
+    private long getNextInput() {
         if (isDebug) {
             System.out.println("Polling for input");
         }
@@ -139,7 +138,7 @@ public class Computer {
      *
      * This call blocks until input is available.
      */
-    public int output() {
+    public long output() {
         if (isDebug) {
             System.out.println("Polling for output");
         }
@@ -156,8 +155,8 @@ public class Computer {
      *
      * This is a non-blocking call.
      */
-    public List<Integer> drain() {
-        final List<Integer> result = new ArrayList<>();
+    public List<Long> drain() {
+        final List<Long> result = new ArrayList<>();
         outputQueue.drainTo(result);
         if (isDebug) {
             System.out.println("Draining output into batch of size " + result.size());
@@ -165,7 +164,7 @@ public class Computer {
         return result;
     }
 
-    private void offerOutput(final int value) {
+    private void offerOutput(final long value) {
         if (isDebug) {
             System.out.println("Output provided: " + value);
         }
