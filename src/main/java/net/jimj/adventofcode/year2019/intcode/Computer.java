@@ -1,6 +1,7 @@
 package net.jimj.adventofcode.year2019.intcode;
 
 import net.jimj.adventofcode.year2019.intcode.instructions.Add;
+import net.jimj.adventofcode.year2019.intcode.instructions.AdjustRelativeBase;
 import net.jimj.adventofcode.year2019.intcode.instructions.Halt;
 import net.jimj.adventofcode.year2019.intcode.instructions.IsEqual;
 import net.jimj.adventofcode.year2019.intcode.instructions.JumpIfFalse;
@@ -43,6 +44,7 @@ public class Computer {
                         new IsEqual(),
                         new JumpIfTrue(),
                         new JumpIfFalse(),
+                        new AdjustRelativeBase(),
                         new Halt()));
     }
 

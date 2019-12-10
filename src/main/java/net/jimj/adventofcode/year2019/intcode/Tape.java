@@ -13,6 +13,7 @@ public final class Tape {
     private boolean isDebug = false;
     private final long[] memory;
     private int pointer = 0;
+    private int relativeBase = 0;
 
     public static Tape forInput(
             final int year,
@@ -47,6 +48,14 @@ public final class Tape {
 
     void debug() {
         isDebug = true;
+    }
+
+    /**
+     * Adds the provided value to the relative base amount.
+     */
+    public void adjustRelativeBase(
+            final int adjustment) {
+        relativeBase += adjustment;
     }
 
     /**
@@ -107,14 +116,11 @@ public final class Tape {
 
         switch (parameterMode) {
             case POSITIONAL:
-                final long parameterPointer = memory[pointerOffset];
-                if (parameterPointer > Integer.MAX_VALUE) {
-                    throw new ArrayIndexOutOfBoundsException("Cannot reference memory at location " + parameterPointer);
-                }
-
-                return (int) parameterPointer;
+                return (int) memory[pointerOffset];
             case IMMEDIATE:
                 return pointerOffset;
+            case RELATIVE:
+                return (int) memory[pointerOffset] + relativeBase;
             default:
                 throw new IllegalStateException("Unhandled ParameterMode " + parameterMode);
         }

@@ -4,7 +4,8 @@ import java.util.Arrays;
 
 public enum ParameterMode {
     POSITIONAL,
-    IMMEDIATE;
+    IMMEDIATE,
+    RELATIVE;
 
     public static ParameterMode forParameterCode(
             final int code) {
