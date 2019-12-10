@@ -31,7 +31,18 @@ public final class Tape {
      */
     public Tape(
             final int[] memory) {
-        this.memory = Arrays.copyOf(memory, memory.length);
+        this(memory, 0);
+    }
+
+    /**
+     * Makes a copy of the memory supplied to protect from external modification.
+     *
+     * @param additionalMemory - the amount of additional memory to allocation for reads/writes.
+     */
+    public Tape(
+            final int[] memory,
+            final int additionalMemory) {
+        this.memory = Arrays.copyOf(memory, memory.length + additionalMemory);
     }
 
     void debug() {
