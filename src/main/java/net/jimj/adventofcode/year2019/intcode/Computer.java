@@ -26,9 +26,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Computer {
     private boolean isDebug = false;
-    private Map<Integer, Instruction> instructions = new HashMap<>();
-    private BlockingQueue<Long> inputQueue = new LinkedBlockingQueue<>();
-    private BlockingQueue<Long> outputQueue = new LinkedBlockingQueue<>();
+    private boolean isWaitingForInput = false;
+    private final Map<Integer, Instruction> instructions = new HashMap<>();
+    private final BlockingQueue<Long> inputQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Long> outputQueue = new LinkedBlockingQueue<>();
 
     /**
      * A standard computer that supports all known IntCode instructions.
@@ -128,11 +129,18 @@ public class Computer {
             System.out.println("Polling for input");
         }
         try {
+            isWaitingForInput = true;
             return inputQueue.take();
         } catch (final InterruptedException e) {
             Thread.currentThread().interrupt();
             return Integer.MIN_VALUE;
+        } finally {
+            isWaitingForInput = false;
         }
+    }
+
+    public boolean isWaitingForInput() {
+        return isWaitingForInput;
     }
 
     /**
