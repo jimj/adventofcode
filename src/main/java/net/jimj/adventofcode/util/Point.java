@@ -32,20 +32,32 @@ public class Point {
     }
 
     public static Point offsetForDirection(
+            final Direction direction) {
+        switch (direction) {
+            case NORTH:
+                return new Point(0, 1);
+            case SOUTH:
+                return new Point(0, -1);
+            case EAST:
+                return new Point(1, 0);
+            case WEST:
+                return new Point(-1, 0);
+            default:
+                throw new IllegalArgumentException("Unknown direction " + direction);
+        }
+    }
+
+    public static Point offsetForDirection(
             final char direction) {
 
         switch (Character.toUpperCase(direction)) {
             case 'U':
-            case 'N':
                 return new Point(0, 1);
             case 'D':
-            case 'S':
                 return new Point(0, -1);
             case 'L':
-            case 'W':
                 return new Point(-1, 0);
             case 'R':
-            case 'E':
                 return new Point(1, 0);
             default:
                 throw new IllegalArgumentException("Unknown direction " + direction);
